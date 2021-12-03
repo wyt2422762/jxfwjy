@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="include :: header('修改房改信息管理')"/>
+  <th:block th:include="include :: datetimepicker-css"/>
+  <th:block th:include="include :: select2-css" />
+
+  <style>
+    .form-control, .check-box, .iCheck-helper, .select2-container--bootstrap .select2-selection{
+      border-color: rgb(98, 161, 198);
+    }
+
+    .input-group-addon {
+      border: 1px solid rgb(98, 161, 198);
+    }
+
+    body, #form-fg-add, .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+      color: black;
+      font-weight: 545;
+    }
+
+    .icheckbox-blue,.icheckbox-blue {
+      background-position: -20px 0
+    }
+  </style>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+  <form class="form-horizontal m" id="form-fg-edit" th:object="${fg}">
+    <h4 class="form-header h4">房改信息管理信息</h4>
+    <input name="id" th:field="*{id}" type="hidden">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">房屋坐落：</label>
+      <div class="col-sm-8">
+        <input name="fwzl" th:field="*{fwzl}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">权证(证明)号：</label>
+      <div class="col-sm-8">
+        <input name="qzh" th:field="*{qzh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方式：</label>
+      <div class="col-sm-8" th:with="type=${@dict.getType('fg_zrfs')}">
+        <label th:each="dict : ${type}" class="check-box">
+          <input name="zrfs" type="checkbox" th:value="${dict.dictValue}" th:text="${dict.dictLabel}"
+                 th:attr="checked=${fg.zrfs.contains(dict.dictValue)?true:false}">
+        </label>
+      </div>
+    </div>
+    <div class="form-group" id="div_zrfsQt"
+         th:style="'display:' + @{(*{zrfsQt != null && zrfsQt != ''} ? 'block' : 'none')} + ''">
+      <label class="col-sm-3 control-label">转让方式_其他：</label>
+      <div class="col-sm-8">
+        <input name="zrfsQt" th:field="*{zrfsQt}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">合同(受理)编号：</label>
+      <div class="col-sm-8">
+        <input name="htbh" th:field="*{htbh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">确认单号：</label>
+      <div class="col-sm-8">
+        <input name="slbh" th:field="*{slbh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">申请日期：</label>
+      <div class="col-sm-8">
+        <div class="input-group date">
+          <input name="sqrq" th:value="${#dates.format(fg.sqrq, 'yyyy-MM-dd')}" class="form-control"
+                 placeholder="yyyy-MM-dd" type="text">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受理日期：</label>
+      <div class="col-sm-8">
+        <div class="input-group date">
+          <input name="slrq" th:value="${#dates.format(fg.slrq, 'yyyy-MM-dd')}" class="form-control"
+                 placeholder="yyyy-MM-dd" type="text">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">备注：</label>
+      <div class="col-sm-8">
+        <textarea name="bz" class="form-control">[[*{bz}]]</textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">附记：</label>
+      <div class="col-sm-8">
+        <textarea name="fj" class="form-control">[[*{fj}]]</textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方姓名：</label>
+      <div class="col-sm-8">
+        <input name="zrfName" th:field="*{zrfName}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方电话：</label>
+      <div class="col-sm-8">
+        <input name="zrfDh" th:field="*{zrfDh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方证件类型：</label>
+      <div class="col-sm-8">
+          <select name="zrfZjLx" class="form-control m-b" th:with="type=${@dict.getType('fg_zjlx')}">
+            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{zrfZjLx}"></option>
+          </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方证件号：</label>
+      <div class="col-sm-8">
+        <input name="zrfZj" th:field="*{zrfZj}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方代理人姓名：</label>
+      <div class="col-sm-8">
+        <input name="zrfDlName" th:field="*{zrfDlName}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方代理人电话：</label>
+      <div class="col-sm-8">
+        <input name="zrfDlDh" th:field="*{zrfDlDh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方代理人证件类型：</label>
+      <div class="col-sm-8">
+        <select name="zrfDlZjLx" class="form-control m-b" th:with="type=${@dict.getType('fg_zjlx')}">
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{zrfDlZjLx}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方代理人证件号：</label>
+      <div class="col-sm-8">
+        <input name="zrfDlZj" th:field="*{zrfDlZj}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方共有情况：</label>
+      <div class="col-sm-8" th:with="type=${@dict.getType('fg_gyqk')}">
+        <label th:each="dict : ${type}" class="check-box">
+          <input name="zrfGy" type="checkbox" th:value="${dict.dictValue}" th:text="${dict.dictLabel}"
+                 th:attr="checked=${fg.zrfGy.contains(dict.dictValue)?true:false}">
+        </label>
+      </div>
+    </div>
+    <div class="form-group" id="div_zrfGyFe"
+         th:style="'display:' + @{(*{zrfGyFe != null && zrfGyFe != ''} ? 'block' : 'none')} + ''">
+      <label class="col-sm-3 control-label">转让方共有份额(按份共有)：</label>
+      <div class="col-sm-8">
+        <input name="zrfGyFe" th:field="*{zrfGyFe}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方姓名：</label>
+      <div class="col-sm-8">
+        <input name="srfName" th:field="*{srfName}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方电话：</label>
+      <div class="col-sm-8">
+        <input name="srfDh" th:field="*{srfDh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方证件类型：</label>
+      <div class="col-sm-8">
+        <select name="srfZjLx" class="form-control m-b" th:with="type=${@dict.getType('fg_zjlx')}">
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{srfZjLx}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方证件号：</label>
+      <div class="col-sm-8">
+        <input name="srfZj" th:field="*{srfZj}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方代理人姓名：</label>
+      <div class="col-sm-8">
+        <input name="srfDlName" th:field="*{srfDlName}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方代理人电话：</label>
+      <div class="col-sm-8">
+        <input name="srfDlDh" th:field="*{srfDlDh}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方代理人证件类型：</label>
+      <div class="col-sm-8">
+        <select name="srfDlZjLx" class="form-control m-b" th:with="type=${@dict.getType('fg_zjlx')}">
+          <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{srfDlZjLx}"></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">受让方代理人证件号：</label>
+      <div class="col-sm-8">
+        <input name="srfDlZj" th:field="*{srfDlZj}" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">转让方共有情况：</label>
+      <div class="col-sm-8" th:with="type=${@dict.getType('fg_gyqk')}">
+        <label th:each="dict : ${type}" class="check-box">
+          <input name="srfGy" type="checkbox" th:value="${dict.dictValue}" th:text="${dict.dictLabel}"
+                 th:attr="checked=${fg.srfGy.contains(dict.dictValue)?true:false}">
+        </label>
+      </div>
+    </div>
+    <div class="form-group" id="div_srfGyFe"
+         th:style="'display:' + @{(*{srfGyFe != null && srfGyFe != ''} ? 'block' : 'none')} + ''">
+      <label class="col-sm-3 control-label">受让方共有份额(按份共有)：</label>
+      <div class="col-sm-8">
+        <input name="srfGyFe" th:field="*{srfGyFe}" class="form-control" type="text">
+      </div>
+    </div>
+    <h4 class="form-header h4">房改房屋信息</h4>
+    <div class="row">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>
+        <button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i>
+        </button>
+        <div class="col-sm-12 select-table table-striped">
+          <table id="bootstrap-table"></table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<th:block th:include="include :: select2-js" />
+<script th:inline="javascript">
+  var prefix = ctx + "fg/fg";
+  $("#form-fg-edit").validate({
+    focusCleanup: true
+  });
+
+  function submitHandler() {
+    if ($.validate.form()) {
+      $.operate.save(prefix + "/edit", $('#form-fg-edit').serialize());
+    }
+  }
+
+  $("input[name='sqrq']").datetimepicker({
+    format: "yyyy-mm-dd",
+    minView: "month",
+    autoclose: true
+  });
+
+  $("input[name='slrq']").datetimepicker({
+    format: "yyyy-mm-dd",
+    minView: "month",
+    autoclose: true
+  });
+
+  $(function () {
+    $("input[name='zrfs']").change(function () {
+      var ts = $(this);
+      if (ts.prop("checked") && ts.val() == "其他法定情形") {
+        $("#div_zrfsQt").show();
+      }
+      if (!ts.prop("checked") && ts.val() == "其他法定情形") {
+        $("#div_zrfsQt").hide();
+        $("#div_zrfsQt input").val("");
+      }
+    });
+
+    $("input[name='zrfGy']").change(function () {
+      var ts = $(this);
+      if (ts.prop("checked") && ts.val() == "按份共有") {
+        $("#div_zrfGyFe").show();
+      }
+      if (!ts.prop("checked") && ts.val() == "按份共有") {
+        $("#div_zrfGyFe").hide();
+        $("#div_zrfGyFe input").val("");
+      }
+    });
+
+    $("input[name='srfGy']").change(function () {
+      var ts = $(this);
+      if (ts.prop("checked") && ts.val() == "按份共有") {
+        $("#div_srfGyFe").show();
+      }
+      if (!ts.prop("checked") && ts.val() == "按份共有") {
+        $("#div_srfGyFe").hide();
+        $("#div_srfGyFe input").val("");
+      }
+    });
+
+    var options = {
+      data: [[${fg.fgFwList}]],
+      pagination: false,
+      showSearch: false,
+      showRefresh: false,
+      showToggle: false,
+      showColumns: false,
+      sidePagination: "client",
+      columns: [{
+        checkbox: true
+      },
+        {
+          field: 'index',
+          align: 'center',
+          title: "序号",
+          formatter: function (value, row, index) {
+            var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+            return columnIndex + $.table.serialNumber(index);
+          }
+        },
+        {
+          field: 'zcs',
+          align: 'center',
+          title: '总层数',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='number' name='fgFwList[%s].zcs' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'cc',
+          align: 'center',
+          title: '层次',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='number' name='fgFwList[%s].cc' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'mj',
+          align: 'center',
+          title: '面积',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='number' name='fgFwList[%s].mj' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'xz',
+          align: 'center',
+          title: '性质',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='text' name='fgFwList[%s].xz' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'yt',
+          align: 'center',
+          title: '用途',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='text' name='fgFwList[%s].yt' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'nd',
+          align: 'center',
+          title: '年代',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='text' name='fgFwList[%s].nd' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'jg',
+          align: 'center',
+          title: '结构',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='text' name='fgFwList[%s].jg' value='%s'>", index, value);
+            return html;
+          }
+        },
+        {
+          field: 'bz',
+          align: 'center',
+          title: '备注',
+          formatter: function (value, row, index) {
+            var html = $.common.sprintf("<input class='form-control' type='text' name='fgFwList[%s].bz' value='%s'>", index, value);
+            return html;
+          }
+
+        }]
+    };
+    $.table.init(options);
+  });
+
+  function addColumn() {
+    var count = $("#" + table.options.id).bootstrapTable('getData').length;
+    sub.editColumn();
+
+    $("#" + table.options.id).bootstrapTable('insertRow', {
+      index: count,
+      row: {
+        index: $.table.serialNumber(count),
+        zcs: "",
+
+        cc: "",
+
+        mj: "",
+
+        xz: "",
+
+        yt: "",
+
+        nd: "",
+
+        jg: "",
+
+        bz: ""
+
+      }
+    });
+  }
+</script>
+</body>
+</html>
