@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.zfjl.mapper.ZfjlMapper">
+
+  <resultMap type="Zfjl" id="ZfjlResult">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <resultMap id="ZfjlAllResult" type="Zfjl" extends="ZfjlResult">
+    <collection property="fjList" notNullColumn="sub_id" javaType="java.util.List" resultMap="ZfjlFjResult"/>
+  </resultMap>
+
+  <resultMap type="ZfjlFj" id="ZfjlFjResult">
+    <result property="id" column="sub_id"/>
+    <result property="fkZfjlid" column="sub_fk_zfjlid"/>
+    <result property="name" column="sub_name"/>
+    <result property="url" column="sub_url"/>
+    <result property="type" column="sub_type"/>
+  </resultMap>
+
+  <sql id="selectZfjlVo">
+    select id, name, create_by, create_time, update_by, update_time
+    from zfjl
+  </sql>
+
+  <select id="selectZfjlList" parameterType="Zfjl" resultMap="ZfjlResult">
+    <include refid="selectZfjlVo"/>
+    <where>
+      <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+    </where>
+  </select>
+
+  <select id="selectZfjlById" parameterType="String" resultMap="ZfjlAllResult">
+    select a.id,
+           a.name,
+           a.create_by,
+           a.create_time,
+           a.update_by,
+           a.update_time,
+           b.id        as sub_id,
+           b.fk_zfjlid as sub_fk_zfjlid,
+           b.name      as sub_name,
+           b.url       as sub_url,
+           b.type      as sub_type
+    from zfjl a
+           left join zfjl_fj b on b.fk_zfjlid = a.id
+    where a.id = #{id}
+  </select>
+
+  <insert id="insertZfjl" parameterType="Zfjl">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID();
+    </selectKey>
+    insert into zfjl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="name != null and name != ''">name,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id},
+      <if test="name != null and name != ''">#{name},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updateZfjl" parameterType="Zfjl">
+    update zfjl
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="name != null and name != ''">name = #{name},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteZfjlById" parameterType="String">
+    delete
+    from zfjl
+    where id = #{id}
+  </delete>
+
+  <delete id="deleteZfjlByIds" parameterType="String">
+    delete from zfjl where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <delete id="deleteZfjlFjByFkZfjlids" parameterType="String">
+    delete from zfjl_fj where fk_zfjlid in
+    <foreach item="fkZfjlid" collection="array" open="(" separator="," close=")">
+      #{fkZfjlid}
+    </foreach>
+  </delete>
+
+  <delete id="deleteZfjlFjByFkZfjlid" parameterType="String">
+    delete
+    from zfjl_fj
+    where fk_zfjlid = #{fkZfjlid}
+  </delete>
+
+  <insert id="batchZfjlFj">
+    insert into zfjl_fj(id, fk_zfjlid, name, url, type) values
+    <foreach item="item" index="index" collection="list" separator=",">
+      (UUID(), #{item.fkZfjlid}, #{item.name}, #{item.url}, #{item.type})
+    </foreach>
+  </insert>
+
+</mapper>

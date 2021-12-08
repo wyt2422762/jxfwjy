@@ -30,6 +30,19 @@ public class RuoYiConfig
     /** 获取地址开关 */
     private static boolean addressEnabled;
 
+    /** 登录页配置 */
+    private static String loginPage;
+
+    public static String getLoginPage()
+    {
+        return loginPage;
+    }
+
+    public void setLoginPage(String loginPage)
+    {
+        RuoYiConfig.loginPage = loginPage;
+    }
+
     public static String getName()
     {
         return name;

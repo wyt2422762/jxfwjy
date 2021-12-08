@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="include :: header('修改执法记录')"/>
+  <link rel="stylesheet" th:href="@{/js/plugins/layui/css/layui.css}">
+
+  <style>
+    .layui-upload {
+      margin: 0 10px 25px 10px;
+    }
+  </style>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+  <form class="form-horizontal m" id="form-zfjl-edit" th:object="${zfjl}">
+    <h4 class="form-header h4">执法记录信息</h4>
+    <div class="form-group">
+      <label class="col-sm-2 control-label is-required">案件名称：</label>
+      <div class="col-sm-8">
+        <input readonly name="name" id="name" th:field="*{name}" class="form-control" type="text" required>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程文书</h4>
+    <div class="layui-upload">
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_ws">
+          <tr th:each="fj: *{fjList}" th:if="${'文书' == fj.type}">
+            <td th:text="${fj.name}">blue.png</td>
+            <td>
+              <button class="layui-btn layui-btn-xs fj-download"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载
+              </button>
+              <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">预览
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程图片</h4>
+    <div class="layui-upload">
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_tp">
+          <tr th:each="fj: *{fjList}" th:if="${'图片' == fj.type}">
+            <td th:text="${fj.name}">blue.png</td>
+            <td>
+              <button class="layui-btn layui-btn-xs fj-download"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载
+              </button>
+              <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">预览
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程音频</h4>
+    <div class="layui-upload">
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_yp">
+          <tr th:each="fj: *{fjList}" th:if="${'音频' == fj.type}">
+            <td th:text="${fj.name}">blue.png</td>
+            <td>
+              <button class="layui-btn layui-btn-xs fj-download"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载
+              </button>
+              <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">预览
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程视频</h4>
+    <div class="layui-upload">
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_sp">
+          <tr th:each="fj: *{fjList}" th:if="${'视频' == fj.type}">
+            <td th:text="${fj.name}">blue.png</td>
+            <td>
+              <button class="layui-btn layui-btn-xs fj-download"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载
+              </button>
+              <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                      th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">预览
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:src="@{/js/plugins/layui/layui.all.js}"></script>
+<script th:src="@{/js/base64.min.js}"></script>
+<script th:inline="javascript">
+  var prefix = ctx + "zfjl/zfjl"
+  var previewUrl=[[${previewUrl}]];
+
+  layui.use(['element', 'upload'], function () {
+    //下载附件方法
+    $("tbody").on('click', 'button.fj-download', function () {
+      var url = $(this).attr("data-url");
+      var name = $(this).attr("data-name");
+      window.location.href = ctx + "common/download?fileName=" + encodeURI(url) + "&delete=" + false;
+      return false;
+    });
+
+    //附件预览方法
+    $("tbody").on('click', 'button.fj-delete', function () {
+      debugger;
+      var url = $(this).attr("data-url");
+      top.window.open(previewUrl + encodeURIComponent(Base64.encode(url)));
+      return false;
+    });
+
+  });
+</script>
+</body>
+</html>

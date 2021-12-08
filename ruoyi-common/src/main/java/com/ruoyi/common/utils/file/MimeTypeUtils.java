@@ -30,11 +30,15 @@ public class MimeTypeUtils
             // 图片
             "bmp", "gif", "jpg", "jpeg", "png",
             // word excel powerpoint
-            "doc", "docx", "xls", "xlsx", "ppt", "pptx", "html", "htm", "txt",
+            "doc", "docx", "xls", "xlsx", "ppt", "pptx",
+            //普通文本
+            "html", "htm",  "txt",
             // 压缩文件
-            "rar", "zip", "gz", "bz2",
+            "rar", "zip", "gz", "bz2", "7z", "tar", "gzip",
             // 视频格式
-            "mp4", "avi", "rmvb",
+            "mp4", "avi", "rm", "rmvb", "mov", "mkv", "flv", "wmv", "3gp", "bd",
+            // 音频格式
+            "mp3", "rmvb", "wav", "mpeg", "wma", "ape", "aac", "aiff", "mid",
             // pdf
             "pdf" };
 

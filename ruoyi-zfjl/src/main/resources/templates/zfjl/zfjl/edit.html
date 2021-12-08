@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="include :: header('修改执法记录')"/>
+  <link rel="stylesheet" th:href="@{/js/plugins/layui/css/layui.css}">
+
+  <style>
+    .layui-upload{
+      margin: 0 10px 25px 10px;
+    }
+  </style>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+  <form class="form-horizontal m" id="form-zfjl-edit" th:object="${zfjl}">
+    <h4 class="form-header h4">执法记录信息</h4>
+    <div class="form-group">
+      <label class="col-sm-2 control-label is-required">案件名称：</label>
+      <div class="col-sm-8">
+        <input name="name" id="name" th:field="*{name}" class="form-control" type="text" required>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程文书</h4>
+    <div class="layui-upload">
+      <button type="button" class="btn btn-white btn-sm" id="file_ws"><i class="fa fa-plus"> 增加</i></button>
+      <!-- 进度条 -->
+      <div class="layui-progress" id="progress_ws" lay-filter="progress_ws" style="display: none;">
+        <div class="layui-progress-bar"></div>
+      </div>
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_ws">
+            <tr th:each="fj: *{fjList}" th:if="${'文书' == fj.type}">
+              <td th:text="${fj.name}">blue.png</td>
+              <td>
+                <button class="layui-btn layui-btn-xs fj-download"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载</button>
+                <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程图片</h4>
+    <div class="layui-upload">
+      <button type="button" class="btn btn-white btn-sm" id="file_tp"><i class="fa fa-plus"> 增加</i></button>
+      <!-- 进度条 -->
+      <div class="layui-progress" id="progress_tp" lay-filter="progress_tp" style="display: none;">
+        <div class="layui-progress-bar"></div>
+      </div>
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_tp">
+            <tr th:each="fj: *{fjList}" th:if="${'图片' == fj.type}">
+              <td th:text="${fj.name}">blue.png</td>
+              <td>
+                <button class="layui-btn layui-btn-xs fj-download"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载</button>
+                <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程音频</h4>
+    <div class="layui-upload">
+      <button type="button" class="btn btn-white btn-sm" id="file_yp"><i class="fa fa-plus"> 增加</i></button>
+      <!-- 进度条 -->
+      <div class="layui-progress" id="progress_yp" lay-filter="progress_yp" style="display: none;">
+        <div class="layui-progress-bar"></div>
+      </div>
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_yp">
+            <tr th:each="fj: *{fjList}" th:if="${'音频' == fj.type}">
+              <td th:text="${fj.name}">blue.png</td>
+              <td>
+                <button class="layui-btn layui-btn-xs fj-download"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载</button>
+                <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h4 class="form-header h4">执法记录-过程视频</h4>
+    <div class="layui-upload">
+      <button type="button" class="btn btn-white btn-sm" id="file_sp"><i class="fa fa-plus"> 增加</i></button>
+      <!-- 进度条 -->
+      <div class="layui-progress" id="progress_sp" lay-filter="progress_sp" style="display: none;">
+        <div class="layui-progress-bar"></div>
+      </div>
+      <div class="layui-upload-list">
+        <table class="layui-table">
+          <tbody id="fileList_sp">
+            <tr th:each="fj: *{fjList}" th:if="${'视频' == fj.type}">
+              <td th:text="${fj.name}">blue.png</td>
+              <td>
+                <button class="layui-btn layui-btn-xs fj-download"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">下载</button>
+                <button class="layui-btn layui-btn-xs layui-btn-danger fj-delete"
+                        th:attr="data-type=${fj.type},data-name=${fj.name},data-url=${fj.url}">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:src="@{/js/plugins/layui/layui.all.js}"></script>
+<script th:src="@{/js/base64.min.js}"></script>
+<script th:inline="javascript">
+  var prefix = ctx + "zfjl/zfjl"
+  $("#form-zfjl-add").validate({
+    focusCleanup: true
+  });
+
+  //执法记录实体类
+  var zfjl = {
+    id: null,
+    name: null,
+    fjList: []
+  }
+
+  zfjl.id = [[${zfjl.id}]];
+  zfjl.name = [[${zfjl.name}]];
+  zfjl.fjList = [[${zfjl.fjList}]];
+
+  function submitHandler() {
+    if ($.validate.form()) {
+      zfjl.name = $("#name").val().trim();
+      debugger;
+      $.operate.savePost(prefix + "/edit", JSON.stringify(zfjl));
+    }
+  }
+
+  layui.use(['element', 'upload'], function () {
+    let element = layui.element;
+    let upload = layui.upload;
+
+    //文书附件
+    renderUpload('#file_ws', '#fileList_ws', 'progress_ws', '文书', 'pdf');
+    //图片附件
+    renderUpload('#file_tp', '#fileList_tp', 'progress_tp', '图片', 'jpg|png|gif|bmp|jpeg');
+    //音频附件
+    renderUpload('#file_yp', '#fileList_yp', 'progress_yp', '音频', 'mp3');
+    //视频附件
+    renderUpload('#file_sp', '#fileList_sp', 'progress_sp', '视频', 'mp4');
+
+    //删除附件方法
+    $("tbody").on('click', 'button.fj-delete', function () {
+      var url = $(this).attr("data-url");
+      var name = $(this).attr("data-name");
+      var type = $(this).attr("data-type");
+
+      var that = this;
+
+      //删除附件列表
+      $(that).parents("tr").remove();
+
+      for (var i = 0; i < zfjl.fjList.length; i++) {
+        var fj = (zfjl.fjList)[i];
+        if (name === fj.name && url === fj.url && type === fj.type) {
+          zfjl.fjList.splice(i, 1);
+          break;
+        }
+      }
+      return false;
+    });
+
+    //下载附件方法
+    $("tbody").on('click', 'button.fj-download', function () {
+      var url = $(this).attr("data-url");
+      var name = $(this).attr("data-name");
+      window.location.href = ctx + "common/download?fileName=" + encodeURI(url) + "&delete=" + false;
+      return false;
+    });
+
+    /**
+     * 渲染文件上传
+     * @param elem 文本域id #xxx
+     * @param elemList 文件列表id #xxx
+     * @param progressBar 进度条 xxxx
+     * @param type 附件类型
+     * @param exts 文件类型
+     */
+    function renderUpload(elem, elemList, progressBar, type, exts) {
+      let loadi;
+
+      var uploadIns = upload.render({
+        elem: elem,
+        elemList: $(elemList),
+        url: prefix + "/upload",
+        accept: 'file',
+        multiple: false,
+        data: {type: type},
+        number: 3,
+        auto: true,
+        field: 'file',
+        //bindAction: bindAction,
+        //exts: 'jpg|png|gif|bmp|jpeg|pdf',
+        //exts: exts,
+        choose: function (obj) {
+          let that = this;
+          let files = that.files = obj.pushFile();
+          debugger;
+          element.progress(progressBar, '0%');
+          $("#" + progressBar).show();
+        },
+        before: function (obj) { //上传前的回调
+          loadi = top.layer.load();
+        },
+        done: function (res, index, upload) { //成功的回调
+          debugger;
+          top.layer.close(loadi);
+          $("#" + progressBar).hide();
+
+          var that = this;
+
+          delete that.files[index]; //删除文件队列已经上传成功的文件
+          uploadIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+
+          if(res.code !== 0) {
+            $.modal.msgError('上传失败');
+            return false;
+          }
+
+          var fj = res;
+
+          var tr = $(['<tr id="upload-' + index + '">',
+            '<td>' + fj.orgFileName + '</td>',
+            '<td>',
+            "<button data-type='" + type + "' data-name='" + fj.orgFileName + "' data-url='" + fj.url + "' class='layui-btn layui-btn-xs fj-download'>下载</button>",
+            ' ',
+            "<button data-type='" + type + "' data-name='" + fj.orgFileName + "' data-url='" + fj.url + "' class='layui-btn layui-btn-xs layui-btn-danger fj-delete'>删除</button>",
+            '</td>',
+            '</tr>'].join(''));
+
+          that.elemList.append(tr);
+
+          //添加附件信息
+          addAttach(fj, type);
+
+          return false;
+        },
+        allDone: function (obj) { //多文件上传完毕后的状态回调
+          top.layer.close(loadi);
+          $("#" + progressBar).hide();
+          return false;
+        },
+        error: function (index, upload) { //错误回调
+          top.layer.close(loadi);
+          $.modal.msgError('上传失败');
+          return false;
+        },
+        progress: function (n, elem, e, index) { //注意：index 参数为 layui 2.6.6 新增
+          element.progress(progressBar, n + '%'); //执行进度条。n 即为返回的进度百分比
+        }
+      });
+    }
+
+    //附件列表添加
+    function addAttach(fj, type) {
+      let attach = {
+        type: type,
+        name: fj.orgFileName,
+        url: fj.url
+      }
+      zfjl.fjList.push(attach);
+    }
+  });
+</script>
+</body>
+</html>

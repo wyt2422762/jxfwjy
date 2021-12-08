@@ -213,10 +213,17 @@
         <version>${ruoyi.version}</version>
       </dependency>
 
-      <!-- 通用工具-->
+      <!-- 房改-->
       <dependency>
         <groupId>com.ruoyi</groupId>
         <artifactId>ruoyi-fg</artifactId>
+        <version>${ruoyi.version}</version>
+      </dependency>
+
+      <!-- 执法记录-->
+      <dependency>
+        <groupId>com.ruoyi</groupId>
+        <artifactId>ruoyi-zfjl</artifactId>
         <version>${ruoyi.version}</version>
       </dependency>
 
@@ -231,6 +238,7 @@
     <module>ruoyi-generator</module>
     <module>ruoyi-common</module>
     <module>ruoyi-fg</module>
+    <module>ruoyi-zfjl</module>
   </modules>
   <packaging>pom</packaging>
 

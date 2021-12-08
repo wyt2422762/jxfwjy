@@ -985,7 +985,6 @@ var table = {
             },
             // 打开遮罩层
             loading: function (message) {
-                debugger;
                 //$.blockUI({ message: '<div class="loaderbox"><div class="loading-activity"></div> ' + message + '</div>' });
                 $("#app", window.top.document).mLoading({
                     text:message,//加载文字，默认值：加载中...
@@ -993,7 +992,6 @@ var table = {
             },
             // 关闭遮罩层
             closeLoading: function () {
-                debugger;
                 $("#app", window.top.document).mLoading("hide");
                 /*setTimeout(function(){
                     $.unblockUI();
@@ -1187,6 +1185,30 @@ var table = {
                     url: url,
                     type: "post",
                     dataType: "json",
+                    data: data,
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍候...");
+                        //$.modal.disable();
+                    },
+                    success: function(result) {
+                        if (typeof callback == "function") {
+                            callback(result);
+                        }
+                        $.operate.successCallback(result);
+                    },
+                    complete: function () {
+                        $.modal.enable();
+                    }
+                };
+                $.ajax(config);
+            },
+            // 保存信息 刷新表格
+            savePost: function(url, data, callback) {
+                var config = {
+                    url: url,
+                    type: "post",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
                     data: data,
                     beforeSend: function () {
                         $.modal.loading("正在处理中，请稍候...");

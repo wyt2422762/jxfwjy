@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.config.RuoYiConfig;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -49,7 +51,9 @@ public class SysLoginController extends BaseController
         mmap.put("isRemembered", rememberMe);
         // 是否开启用户注册
         mmap.put("isAllowRegister", Convert.toBool(configService.getKey("sys.account.registerUser"), false));
-        return "login";
+        // 是否开启记住我
+        mmap.put("name", RuoYiConfig.getName());
+        return RuoYiConfig.getLoginPage();
     }
 
     @PostMapping("/login")

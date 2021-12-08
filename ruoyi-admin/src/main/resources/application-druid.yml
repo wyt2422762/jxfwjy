@@ -55,3 +55,7 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+
+#附件预览配置
+preview:
+    url: http://localhost:8012/onlinePreview?url=

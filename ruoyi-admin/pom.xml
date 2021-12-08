@@ -67,10 +67,16 @@
       <artifactId>ruoyi-generator</artifactId>
     </dependency>
 
-    <!-- 代码生成-->
+    <!-- 房改-->
     <dependency>
       <groupId>com.ruoyi</groupId>
       <artifactId>ruoyi-fg</artifactId>
+    </dependency>
+
+    <!-- 执法记录-->
+    <dependency>
+      <groupId>com.ruoyi</groupId>
+      <artifactId>ruoyi-zfjl</artifactId>
     </dependency>
 
   </dependencies>
