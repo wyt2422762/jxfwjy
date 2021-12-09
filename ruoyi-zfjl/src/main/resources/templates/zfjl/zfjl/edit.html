@@ -185,7 +185,7 @@
     $("tbody").on('click', 'button.fj-download', function () {
       var url = $(this).attr("data-url");
       var name = $(this).attr("data-name");
-      window.location.href = ctx + "common/download?fileName=" + encodeURI(url) + "&delete=" + false;
+      window.location.href = ctx + "common/download/resource?resource=" + encodeURI(url) + "&delete=" + false;
       return false;
     });
 

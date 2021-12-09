@@ -21,15 +21,4 @@ public class RuoYiApplication
         SpringApplication.run(RuoYiApplication.class, args);
         System.out.println("若依启动成功");
     }
-
-    /*@Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        //单个文件最大
-        factory.setMaxFileSize(DataSize.parse("10GB"));
-        /// 设置总上传数据总大小
-        factory.setMaxRequestSize(DataSize.parse("50GB"));
-        return factory.createMultipartConfig();
-    }*/
-
 }

@@ -1,5 +1,6 @@
 package com.ruoyi.zfjl.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import com.ruoyi.common.config.RuoYiConfig;
@@ -23,6 +24,10 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 执法记录主Controller
@@ -88,6 +93,7 @@ public class ZfjlController extends BaseController
         Zfjl zfjl = zfjlService.selectZfjlById(id);
         mmap.put("zfjl", zfjl);
         mmap.put("previewUrl", previewUrl);
+        mmap.put("serverBase", serverConfig.getUrl());
         return prefix + "/view";
     }
 
@@ -161,11 +167,11 @@ public class ZfjlController extends BaseController
             String filePath = RuoYiConfig.getUploadPath() + "/zfjl";
             // 上传并返回新文件名称
             String fileName = FileUploadUtils.upload(filePath, file);
-            String url = serverConfig.getUrl() + fileName;
+
             AjaxResult ajax = AjaxResult.success();
             ajax.put("fileName", fileName);
             ajax.put("orgFileName", file.getOriginalFilename());
-            ajax.put("url", url);
+            ajax.put("url", fileName);
             return ajax;
         }
         catch (Exception e)

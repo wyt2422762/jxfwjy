@@ -113,20 +113,22 @@
 <script th:inline="javascript">
   var prefix = ctx + "zfjl/zfjl"
   var previewUrl=[[${previewUrl}]];
+  var serverBase=[[${serverBase}]];
 
   layui.use(['element', 'upload'], function () {
     //下载附件方法
     $("tbody").on('click', 'button.fj-download', function () {
       var url = $(this).attr("data-url");
       var name = $(this).attr("data-name");
-      window.location.href = ctx + "common/download?fileName=" + encodeURI(url) + "&delete=" + false;
+      window.location.href = ctx + "common/download/resource?resource=" + encodeURI(url) + "&delete=" + false;
       return false;
     });
 
     //附件预览方法
     $("tbody").on('click', 'button.fj-delete', function () {
       debugger;
-      var url = $(this).attr("data-url");
+      //var url = ctx + "common/download/resource?resource=" + encodeURI($(this).attr("data-url"));
+      var url = serverBase + $(this).attr("data-url");
       top.window.open(previewUrl + encodeURIComponent(Base64.encode(url)));
       return false;
     });
